@@ -1,0 +1,12 @@
+# --- CORE NETWORK ANALYSIS ---
+networkx>=2.8.8       # Thư viện chính để dựng và phân tích đồ thị
+scipy>=1.10.1         # Tính toán ma trận cho NetworkX (PageRank, Eigenvector)
+python-louvain>=0.16  # Thư viện chuyên dụng hỗ trợ thuật toán Louvain cực nhanh
+
+# --- DATA MANIPULATION ---
+pandas>=1.5.3         # Xử lý dữ liệu dạng bảng, xuất/nhập file CSV
+numpy>=1.24.2         # Tính toán mảng, số liệu thống kê
+
+# --- VISUALIZATION & METRICS PLOTTING ---
+matplotlib>=3.7.1     # Vẽ biểu đồ Line chart (Degree distribution), Bar chart
+seaborn>=0.12.2       # Làm đẹp biểu đồ của matplotlib (chuẩn bài báo học thuật)
