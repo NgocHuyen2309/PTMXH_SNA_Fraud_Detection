@@ -1,0 +1,31 @@
+============================================================
+  BITCOIN OTC – DATASET STATISTICS
+============================================================
+
+[DiGraph – Có hướng]
+  directed_nodes                      5881
+  directed_edges                      35592
+  directed_density                    0.001029
+  directed_avg_degree                 12.1041
+  directed_avg_in_deg                 6.052
+
+[Undirected Graph – Vô hướng]
+  undirected_nodes                    5881
+  undirected_edges                    21492
+  undirected_density                  0.001243
+  undirected_avg_degree               7.309
+
+[Thống kê trọng số (weight)]
+  weight_mean                         0.5315
+  weight_std                          0.1975
+  weight_min                          0.0
+  weight_max                          1.0
+
+[Phân bố đánh giá (Trust)]
+  pct_positive_trust                  85.06%
+  pct_negative_trust                  14.67%
+  pct_neutral_trust                   0.27%
+
+[Ghi chú]
+  Trọng số (weight) = (rating + 10) / 20
+  Undirected: cạnh ngược chiều được gộp (avg weight)
