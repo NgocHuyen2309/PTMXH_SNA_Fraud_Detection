@@ -88,8 +88,8 @@ def detect_communities(core_graph: nx.Graph) -> dict:
     Sử dụng thuật toán Louvain để phát hiện các băng đảng/cụm trên lõi K-core.
     """
     log.info("─── Bắt đầu phân cụm Louvain ───")
-    # Sử dụng trọng số (weight) để tối ưu Modularity
-    partition = community_louvain.best_partition(core_graph, weight='weight')
+    # Sử dụng trọng số (weight) để tối ưu Modularity và cố định seed (random_state)
+    partition = community_louvain.best_partition(core_graph, weight='weight', random_state=42)
     
     num_communities = len(set(partition.values()))
     modularity = community_louvain.modularity(partition, core_graph, weight='weight')
@@ -121,8 +121,8 @@ def find_masterminds(partition: dict, G_dir: nx.DiGraph) -> pd.DataFrame:
         
         # Chỉ lấy những cộng đồng có từ 2 node trở lên và có cạnh
         if sub_dir.number_of_nodes() > 1 and sub_dir.number_of_edges() > 0:
-            # Tính PageRank (chú ý: pagerank mặc định hỗ trợ DiGraph, dùng 'weight' làm trọng số cạnh)
-            pr_scores = nx.pagerank(sub_dir, weight='weight')
+            # Tính PageRank (chú ý: pagerank mặc định hỗ trợ DiGraph, dùng 'weight' làm trọng số cạnh, alpha=0.85)
+            pr_scores = nx.pagerank(sub_dir, alpha=0.85, weight='weight')
             
             # Mastermind là người có PageRank cao nhất trong cụm
             mastermind = max(pr_scores, key=pr_scores.get)
