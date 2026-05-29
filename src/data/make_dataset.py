@@ -47,7 +47,7 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 # ─── Đường dẫn mặc định ────────────────────────────────────────────────────
-ROOT_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parents[2]
 RAW_DIR      = ROOT_DIR / "data" / "raw"
 PROCESSED_DIR = ROOT_DIR / "data" / "processed"
 RAW_CSV      = RAW_DIR / "soc-sign-bitcoinotc.csv"
