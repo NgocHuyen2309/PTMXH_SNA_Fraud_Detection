@@ -1,0 +1,3 @@
+Pipeline: Baseline (Louvain -> PageRank)
+Execution Time (s): 2.35
+Baseline Modularity (Q): 0.5084
