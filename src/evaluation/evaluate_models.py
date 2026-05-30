@@ -287,20 +287,27 @@ class EvaluationMetrics:
 
     def plot_degree_distribution(self, degree_df: pd.DataFrame) -> None:
         plt.figure(figsize=(9, 5))
-        plt.plot(degree_df["Degree"], degree_df["Raw_Count"], marker="o", label="Before K-core")
-        plt.plot(degree_df["Degree"], degree_df["Kcore_Count"], marker="o", label="After K-core")
+        
+        # SỬA LẠI: Lọc bỏ các Degree có Count = 0 để tránh lỗi log(0)
+        plot_raw = degree_df[degree_df["Raw_Count"] > 0]
+        plot_kcore = degree_df[degree_df["Kcore_Count"] > 0]
 
-        plt.title("Degree Distribution Before and After K-core Filtering")
-        plt.xlabel("Degree")
-        plt.ylabel("Number of Nodes")
+        # SỬA LẠI: Thay plt.plot bằng plt.loglog để vẽ thang đo Logarit
+        plt.loglog(plot_raw["Degree"], plot_raw["Raw_Count"], marker="o", linestyle="", alpha=0.6, label="Before K-core (Raw)")
+        plt.loglog(plot_kcore["Degree"], plot_kcore["Kcore_Count"], marker="x", linestyle="", color="red", label="After K-core")
+
+        plt.title("Degree Distribution (Log-Log Scale)")
+        plt.xlabel("Degree (log)")
+        plt.ylabel("Number of Nodes (log)")
         plt.legend()
-        plt.grid(True, alpha=0.3)
+        plt.grid(True, alpha=0.3, which="both", ls="--") # Lưới cho cả trục log
 
         plt.tight_layout()
         out_path = self.results_figures_dir / "degree_distribution_before_after_kcore.png"
         plt.savefig(out_path, dpi=300)
         plt.close()
-        log.info("Đã lưu biểu đồ Degree Distribution: %s", out_path)
+        log.info("Đã lưu biểu đồ Degree Distribution (Log-Log): %s", out_path)
+
 
     # ─── Main pipeline ─────────────────────────────────────────────────────
     def run(self) -> None:
