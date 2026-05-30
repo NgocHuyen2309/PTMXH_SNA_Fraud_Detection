@@ -1,0 +1,4 @@
+Pipeline: K-core -> Louvain -> PageRank
+Execution Time (s): 5.16
+Final Core Modularity (Q): 0.2917
+Max K-core used: 21
