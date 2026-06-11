@@ -13,33 +13,56 @@ graph TD
     classDef evaluate fill:#ce93d8,stroke:#333,stroke-width:2px;
     classDef visual fill:#ffab91,stroke:#333,stroke-width:2px;
 
-    %% Step 1: Raw Data & Preprocessing
-    A[Raw Dataset<br>soc-sign-bitcoinotc.csv]:::rawData -->|src/data/make_dataset.py| B(Data Cleaning & Normalization):::process
-    
-    B --> C[(Undirected Graph<br>bitcoin_otc_undirected.graphml)]:::data
-    B --> D[(Directed Graph<br>bitcoin_otc_directed.graphml)]:::data
-    
-    %% Branch 1: Baseline Model
-    subgraph Baseline Pipeline
-        C -.->|src/models/baseline_model.py| E[Direct Louvain<br>Community Detection]:::baseline
-        D -.->|src/models/baseline_model.py| F[PageRank<br>Mastermind Identification]:::baseline
-        E -.-> F
+    %% --- GIAI ĐOẠN 1 ---
+    subgraph Phase 1: Data Preprocessing
+        direction TB
+        A[Raw Dataset<br>soc-sign-bitcoinotc.csv]:::rawData -->|src/data/make_dataset.py| B(Data Cleaning & Normalization):::process
+        B --> C[(Undirected Graph)]:::data
+        B --> D[(Directed Graph)]:::data
+    end
+
+    %% --- GIAI ĐOẠN 2 ---
+    subgraph Phase 2: Bifurcated Models
+        direction TB
+        
+        subgraph Baseline Pipeline
+            direction TB
+            E[Direct Louvain<br>Community Detection]:::baseline
+            F[PageRank<br>Mastermind Identification]:::baseline
+            E -.-> F
+        end
+        
+        subgraph Proposed Hybrid Pipeline
+            direction TB
+            G[K-core Decomposition<br>Noise Filtering]:::proposed
+            H[Louvain on Core Graph<br>Community Detection]:::proposed
+            I[PageRank<br>Mastermind Identification]:::proposed
+            G ==> H
+            H ==> I
+        end
     end
     
-    %% Branch 2: Proposed Model
-    subgraph Proposed Hybrid Pipeline
-        C ==>|src/models/proposed_model.py| G[K-core Decomposition<br>Noise Filtering]:::proposed
-        G ==> H[Louvain on Core Graph<br>Community Detection]:::proposed
-        D ==>|src/models/proposed_model.py| I[PageRank<br>Mastermind Identification]:::proposed
-        H ==> I
+    %% Nối Data vào 2 luồng
+    C -.->|src/models/baseline_model.py| E
+    C ==>|src/models/proposed_model.py| G
+    
+    D -.->|src/models/baseline_model.py| F
+    D ==>|src/models/proposed_model.py| I
+
+    %% --- GIAI ĐOẠN 3 ---
+    subgraph Phase 3: Evaluation & Visualization
+        direction TB
+        J{Metrics & Output CSVs}:::data
+        K[Modularity & Execution Time<br>Benchmarking]:::evaluate
+        L[Macro Visualization<br>Gephi GEXF Export]:::visual
+        M[Micro Visualization<br>Communities & Masterminds]:::visual
+        
+        J -->|src/evaluation/evaluate_models.py| K
+        J -->|src/visualization/macro_vis.py| L
+        J -->|src/visualization/micro_vis.py| M
     end
     
-    %% Step 4: Output Metrics
-    F -.-> J{Metrics & Output CSVs}:::data
+    %% Nối 2 luồng vào Output
+    F -.-> J
     I ==> J
-    
-    %% Step 5: Evaluation & Visualization
-    J -->|src/evaluation/evaluate_models.py| K[Modularity & Execution Time<br>Benchmarking]:::evaluate
-    J -->|src/visualization/macro_vis.py| L[Macro Visualization<br>Gephi GEXF Export]:::visual
-    J -->|src/visualization/micro_vis.py| M[Micro Visualization<br>Communities & Masterminds]:::visual
 ```
